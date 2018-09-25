@@ -1,14 +1,31 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import { queues, UPDATE_TAG_MEDIAS } from '../../worker/queues';
 
-export const Tags = new Mongo.Collection('Tags');
+import { Medias } from '../medias/medias.js';
+
+class TagsCollection extends Mongo.Collection {
+  insert(doc, callback) {
+    const result = super.insert(ourDoc, callback);
+
+    // Only if the tag exists in the instagram API and not
+    // exists in local db.
+    // queues[UPDATE_TAG_MEDIAS].add({
+    //   tag: doc.name,
+    // });
+
+    return result;
+  }
+}
+
+export const Tags = new TagsCollection('Tags');
 
 // Deny all client-side updates since we will be using methods to manage this collection
-// Tags.deny({
-//   insert() {
-//     return true;
-//   },
-// });
+Tags.deny({
+  insert() {
+    return true;
+  },
+});
 
 Tags.schema = new SimpleSchema({
   _id: {
@@ -17,6 +34,7 @@ Tags.schema = new SimpleSchema({
   },
   name: {
     type: String,
+    // unique: true,
   },
   updated: {
     type: Boolean,
@@ -26,7 +44,7 @@ Tags.schema = new SimpleSchema({
     type: Date,
     optional: true,
   },
-  media_count: {
+  mediaCount: {
     type: Number,
     defaultValue: 0,
   },
@@ -48,3 +66,9 @@ Tags.attachSchema(Tags.schema);
 //   media_count: 1,
 //   unread_media_count: 1,
 // };
+
+Tags.helpers({
+  medias(tag) {
+    return Medias.find({ tags: tag || this.name });
+  },
+});

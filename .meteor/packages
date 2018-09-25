@@ -23,3 +23,5 @@ mdg:validated-method
 ddp-rate-limiter
 aldeed:collection2
 reywood:publish-composite
+http
+dburles:collection-helpers

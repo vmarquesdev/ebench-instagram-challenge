@@ -4,3 +4,6 @@ import './fixtures.js';
 // This defines all the collections, publications and methods that the application provides
 // as an API to the client.
 import './register-api.js';
+
+// This defines all the workers and queue jobs of the application.
+import './register-worker.js';

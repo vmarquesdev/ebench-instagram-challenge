@@ -17,14 +17,14 @@ export const insert = new ValidatedMethod({
 });
 
 // // Get list of all method names on Todos
-// const TODOS_METHODS = _.pluck([insert], 'name');
+// const TAGS_METHODS = _.pluck([insert], 'name');
 //
 // if (Meteor.isServer) {
 //   // Only allow 5 todos operations per connection per second
 //   DDPRateLimiter.addRule(
 //     {
 //       name(name) {
-//         return _.contains(TODOS_METHODS, name);
+//         return _.contains(TAGS_METHODS, name);
 //       },
 //
 //       // Rate limit per connection ID
