@@ -1,12 +1,12 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { queues, UPDATE_TAG_MEDIAS } from '../../worker/queues';
+// import { queues, UPDATE_TAG_MEDIAS } from '../../worker/queues';
 
 import { Medias } from '../medias/medias.js';
 
 class TagsCollection extends Mongo.Collection {
   insert(doc, callback) {
-    const result = super.insert(ourDoc, callback);
+    const result = super.insert(doc, callback);
 
     // Only if the tag exists in the instagram API and not
     // exists in local db.
@@ -34,7 +34,7 @@ Tags.schema = new SimpleSchema({
   },
   name: {
     type: String,
-    // unique: true,
+    unique: true,
   },
   updated: {
     type: Boolean,
