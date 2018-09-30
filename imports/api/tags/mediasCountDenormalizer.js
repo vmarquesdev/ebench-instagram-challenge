@@ -1,13 +1,13 @@
 import { Tags } from './tags.js';
 
 const mediasCountDenormalizer = {
-  _updateTag(tag) {
-    // Verificar o que acontece caso exista uma tag na lista que
-    // não exista, verificar se ele retorna somente as existentes
-    // ou se lança uma exception.
-    const count = Tags.medias(tags).count();
+  _updateTag(tagName) {
+    const tag = Tags.findOne({ name: tagName });
 
-    Tags.update(tag, { $set: { mediaCount: count } });
+    if (tag) {
+      const count = tag.medias().count();
+      Tags.update(tag._id, { $set: { mediaCount: count } });
+    }
   },
   afterInsertMedias(tags) {
     tags.forEach((tag) => {

@@ -1,0 +1,8 @@
+Jobs:
+  ☐ Clean redis every x time.
+  ☐ Increase amount of tabs at RAKE_TAGS processor.
+
+Files:
+  ☐ Setup csv file type validation on the server.
+  ✔ Add X tag pear queu. @done(2018-09-29 16:39) @project(Files)
+  ✔ Sort tags list by createdAt @done(2018-09-29 16:38) @project(Files)

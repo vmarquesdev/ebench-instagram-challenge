@@ -1,20 +1,19 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-// import { queues, UPDATE_TAG_MEDIAS } from '../../worker/queues';
+import { queues, UPDATE_TAG_MEDIAS } from '../../worker/queues';
 
 import { Medias } from '../medias/medias.js';
 
 class TagsCollection extends Mongo.Collection {
   insert(doc, callback) {
-    const result = super.insert(doc, callback);
+    const ourDoc = doc;
+    ourDoc.createdAt = new Date();
 
-    // Only if the tag exists in the instagram API and not
-    // exists in local db.
-    // queues[UPDATE_TAG_MEDIAS].add({
-    //   tag: doc.name,
-    // });
+    queues[UPDATE_TAG_MEDIAS].add({
+      tag: doc.name,
+    });
 
-    return result;
+    return super.insert(ourDoc, callback);
   }
 }
 
@@ -40,7 +39,7 @@ Tags.schema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
-  last_sync: {
+  lastSync: {
     type: Date,
     optional: true,
   },
@@ -48,9 +47,13 @@ Tags.schema = new SimpleSchema({
     type: Number,
     defaultValue: 0,
   },
-  unread_media_count: {
+  lastUnScyncMediaCount: {
     type: Number,
     defaultValue: 0,
+  },
+  createdAt: {
+    type: Date,
+    denyUpdate: true,
   },
 });
 
@@ -59,13 +62,14 @@ Tags.attachSchema(Tags.schema);
 // This represents the keys from Lists objects that should be published
 // to the client. If we add secret properties to List objects, don't list
 // them here to keep them private to the server.
-// Tags.publicFields = {
-//   name: 1,
-//   updated: 1,
-//   last_sync: 1,
-//   media_count: 1,
-//   unread_media_count: 1,
-// };
+Tags.publicFields = {
+  name: 1,
+  updated: 1,
+  lastSync: 1,
+  mediaCount: 1,
+  lastUnScyncMediaCount: 1,
+  createdAt: 1,
+};
 
 Tags.helpers({
   medias(tag) {

@@ -28,3 +28,5 @@ dburles:collection-helpers
 aldeed:schema-index
 fourseven:scss
 ostrio:files
+aldeed:schema-deny
+momentjs:moment

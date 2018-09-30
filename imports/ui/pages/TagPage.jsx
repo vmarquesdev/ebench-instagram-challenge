@@ -44,9 +44,31 @@ export default class TagPage extends Component {
 
     const Tags = tags.map(tag => (
       <div key={tag._id}>
+        Tag Name:
+        {' '}
         {tag.name}
+        <br />
+        Update:
+        {' '}
+        {tag.updated ? 'Yes' : 'Updating...'}
+        <br />
+        Last Sync:
+        {' '}
+        {moment(tag.lastSync).format('MMMM Do YYYY, h:mm a') || 'Is the first Sync'}
+        <br />
+        Media Count:
         {' '}
         {tag.mediaCount}
+        <br />
+        Last Un Sync Media Count:
+        {' '}
+        {tag.lastUnScyncMediaCount}
+        <br />
+        Created At:
+        {' '}
+        {moment(tag.createdAt).format('MMMM Do YYYY, h:mm a')}
+        <br />
+        <br />
       </div>
     ));
 
