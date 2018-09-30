@@ -23,10 +23,9 @@ Files.collection.attachSchema(FilesCollection.schema);
 if (Meteor.isServer) {
   Files.on('afterUpload', function(_fileRef) {
     csv.fromPath(_fileRef.path).on('data', function(data) {
-      // This loop groups tags in 5
-      for (let i = 0; i < data.length; i += 5) {
+      for (let i = 0; i < data.length; i += 1) {
         queues[INSERT_TAG].add({
-          tags: data.slice(i, i + 5),
+          tag: data[i],
         });
       }
     });
