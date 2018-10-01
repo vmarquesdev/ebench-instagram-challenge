@@ -1,129 +1,41 @@
+/* eslint-disable */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import UploaderContainer from '../containers/UploaderContainer.jsx';
-
-// import { displayError } from '../helpers/errors.js';
-
-// import { insert } from '../../api/tags/methods.js';
-
-// import TagsSearch from '../components/TagsSearch.jsx';
-
 export default class TagPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: '' };
-    this.loading = false;
-    this.handleChange = this.handleChange.bind(this);
-    // this.createTag = this.createTag.bind(this);
-  }
+  render() {
+    const { tag, tagExists, loading, medias } = this.props;
 
-  handleChange(e) {
-    this.setState({ value: e.target.value.trim() });
-  }
+    // if (!tagExists) {
+    //   return <NotFoundPage />;
+    // }
 
-  renderTags(tags, order) {
-    // .sort((a, b) => b.name.indexOf('tra') - a.name.indexOf('tra'))
-
-    // console.log(`${b.name} ${b.name.indexOf('tra') - a.name.indexOf('tra')}`);
-    // return b.name.indexOf('tra') - a.name.indexOf('tra');
+    // const TagHeader = (
     //
-    // const order = b.name.indexOf('tra') - a.name.indexOf('tra');
-    //
-    // if (!order)
+    // );
 
-    // if (a.name < b.name) return -1;
-    // if (a.name > b.name) return 1;
-    // return 0;
+    const TagHeader = <div className="tag-page__header">{tag.name}</div>;
 
-    if (order !== '') {
-      tags.sort((a, b) => b.name.indexOf(order) - a.name.indexOf(order));
+    let Medias;
+    if (!medias || !medias.length) {
+      Medias = <span>This tag does not have medias yet</span>;
     } else {
-      // Order by createdAt
+      Medias = medias.map(media => (
+        <div
+          key={media._id}
+          className="media-item"
+          style={{ backgroundImage: `url(${media.thumbUrl})` }}
+        />
+      ));
     }
 
-    const Tags = tags.map(tag => (
-      <div key={tag._id}>
-        Tag Name:
-        {' '}
-        {tag.name}
-        <br />
-        Update:
-        {' '}
-        {tag.updated ? 'Yes' : 'Updating...'}
-        <br />
-        Last Sync:
-        {' '}
-        {moment(tag.lastSync).format('MMMM Do YYYY, h:mm a') || 'Is the first Sync'}
-        <br />
-        Media Count:
-        {' '}
-        {tag.mediaCount}
-        <br />
-        Last Un Sync Media Count:
-        {' '}
-        {tag.lastUnScyncMediaCount}
-        <br />
-        Created At:
-        {' '}
-        {moment(tag.createdAt).format('MMMM Do YYYY, h:mm a')}
-        <br />
-        <br />
-      </div>
-    ));
-
-    return Tags;
-  }
-
-  // createTag(event) {
-  //   event.preventDefault();
-  //   const input = this.newTagInput;
-  //   if (input.value.trim()) {
-  //     insert.call(
-  //       {
-  //         name: input.value,
-  //       },
-  //       displayError,
-  //     );
-  //     input.value = '';
-  //   }
-  // }
-
-  render() {
-    const { tags } = this.props;
-    const { value } = this.state;
-
-    const TagsSearch = (
-      <div className="tags-search">
-        <h3>Full Text Search:</h3>
-        <div className="tags-search__container">
-          <div className="tags-search__form">
-            <form>
-              <input
-                type="search"
-                onChange={this.handleChange}
-                placeholder="Search or create tags"
-              />
-            </form>
-
-            {this.loading ? <span className="tags-search__loading">Searching...</span> : ''}
-          </div>
-
-          {/* <div className="tags-search__instagram-list" /> */}
-        </div>
-      </div>
-    );
-
     return (
-      <div>
-        {TagsSearch}
-        <br />
-        <UploaderContainer />
-        {/* <TagsSearch handleChange={this.handleChange} /> */}
-        <br />
-        <div>
-          <h3>Tags List:</h3>
-          <div>{this.renderTags(tags, value)}</div>
+      <div className="page tag-page">
+        {TagHeader}
+
+        <div className="tag-page__medias">
+          {loading ? <span className="loading">Loading medias...</span> : Medias}
         </div>
       </div>
     );
@@ -131,5 +43,8 @@ export default class TagPage extends Component {
 }
 
 TagPage.propTypes = {
-  tags: PropTypes.array.isRequired,
+  tag: PropTypes.object,
+  medias: PropTypes.array,
+  loading: PropTypes.bool,
+  tagExists: PropTypes.bool,
 };

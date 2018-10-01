@@ -5,10 +5,10 @@ import { Tags } from '../../api/tags/tags.js';
 import App from '../layouts/App.jsx';
 
 export default withTracker(() => {
-  const tagsHandle = Meteor.subscribe('tags');
+  const tagsSub = Meteor.subscribe('tags');
 
   return {
-    loading: !(tagsHandle.ready() && tagsHandle.ready()),
+    loading: !tagsSub.ready(),
     connected: Meteor.status().connected,
     tags: Tags.find().fetch(),
   };

@@ -115,8 +115,6 @@ export default class Uploader extends Component {
     const { inProgress } = this.state;
     const { files, docsReadyYet } = this.props;
 
-    // debug('Rendering FileUpload', docsReadyYet);
-
     if (files && docsReadyYet) {
       const fileCursors = files;
 
@@ -132,8 +130,6 @@ export default class Uploader extends Component {
 
       return (
         <div className="tags-upload">
-          <h3>Upload Tags CSV List:</h3>
-
           <div className="tags-upload__container">
             <div className="tags-upload__form">
               <form>
@@ -150,10 +146,9 @@ export default class Uploader extends Component {
             </div>
 
             <div className="tags-upload__list">
-              <div className="col-md-6">{this.showUploads()}</div>
+              {this.showUploads()}
+              {display}
             </div>
-
-            {display}
           </div>
         </div>
       );
