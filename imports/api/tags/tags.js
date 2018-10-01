@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { queues, UPDATE_TAG_MEDIAS } from '../../worker/queues';
+import { queues, MEDIAS_RATE_LIMITER, UPDATE_TAG_MEDIAS } from '../../worker/queues';
 
 import { Medias } from '../medias/medias.js';
 
@@ -9,8 +9,11 @@ class TagsCollection extends Mongo.Collection {
     const ourDoc = doc;
     ourDoc.createdAt = new Date();
 
-    queues[UPDATE_TAG_MEDIAS].add({
-      tag: doc.name,
+    queues[MEDIAS_RATE_LIMITER].add({
+      queue: UPDATE_TAG_MEDIAS,
+      data: {
+        tag: doc.name,
+      },
     });
 
     return super.insert(ourDoc, callback);

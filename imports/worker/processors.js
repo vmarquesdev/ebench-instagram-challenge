@@ -1,7 +1,13 @@
 import { _ } from 'meteor/underscore';
 import { HTTP } from 'meteor/http';
 import {
-  queues, RAKE_TAGS, INSERT_TAG, UPDATE_TAG_COUNT, UPDATE_TAG_MEDIAS,
+  queues,
+  TAG_RATE_LIMITER,
+  MEDIAS_RATE_LIMITER,
+  RAKE_TAGS,
+  INSERT_TAG,
+  UPDATE_TAG_COUNT,
+  UPDATE_TAG_MEDIAS,
 } from './queues';
 
 import { Tags } from '../api/tags/tags.js';
@@ -16,11 +22,14 @@ export const processorInitialisers = {
 
     if (tags) {
       for (let i = 0; i < tags.length; i += 1) {
-        queues[UPDATE_TAG_COUNT].add({
-          tag: {
-            _id: tags[i]._id,
-            name: tags[i].name,
-            mediaCount: tags[i].mediaCount,
+        queues[TAG_RATE_LIMITER].add({
+          queue: UPDATE_TAG_COUNT,
+          data: {
+            tag: {
+              _id: tags[i]._id,
+              name: tags[i].name,
+              mediaCount: tags[i].mediaCount,
+            },
           },
         });
       }
@@ -50,9 +59,12 @@ export const processorInitialisers = {
             error,
           };
 
-          queues[INSERT_TAG].add({
-            error: errorObject,
-            tag,
+          queues[TAG_RATE_LIMITER].add({
+            queue: INSERT_TAG,
+            data: {
+              error: errorObject,
+              tag,
+            },
           });
         }
       });
@@ -72,8 +84,11 @@ export const processorInitialisers = {
             $set: { updated: false, lastUnScyncMediaCount: returnedTag.media_count },
           });
 
-          queues[UPDATE_TAG_MEDIAS].add({
-            tag: tag.name,
+          queues[MEDIAS_RATE_LIMITER].add({
+            queue: UPDATE_TAG_MEDIAS,
+            data: {
+              tag: tag.name,
+            },
           });
         }
       } else {
@@ -120,9 +135,12 @@ export const processorInitialisers = {
         tag = Tags.findOne({ name: tag.name });
 
         if (tag.lastUnScyncMediaCount > tag.mediaCount) {
-          queues[UPDATE_TAG_MEDIAS].add({
-            nextUrl: response.data.pagination.next_url,
-            tag: tag.name,
+          queues[MEDIAS_RATE_LIMITER].add({
+            queue: UPDATE_TAG_MEDIAS,
+            data: {
+              nextUrl: response.data.pagination.next_url,
+              tag: tag.name,
+            },
           });
         } else {
           Tags.update(tag._id, {
@@ -135,10 +153,13 @@ export const processorInitialisers = {
           error,
         };
 
-        queues[UPDATE_TAG_MEDIAS].add({
-          error: errorObject,
-          nextUrl: endpoint,
-          tag: tag.name,
+        queues[MEDIAS_RATE_LIMITER].add({
+          queue: UPDATE_TAG_MEDIAS,
+          data: {
+            error: errorObject,
+            nextUrl: endpoint,
+            tag: tag.name,
+          },
         });
 
         // throw new Error(errorObject.domain);
@@ -146,5 +167,11 @@ export const processorInitialisers = {
     });
 
     console.log(`Finish ${job.data.tag}...`);
+  },
+  [TAG_RATE_LIMITER]: () => async (job) => {
+    queues[job.data.queue].add(job.data.data);
+  },
+  [MEDIAS_RATE_LIMITER]: () => async (job) => {
+    queues[job.data.queue].add(job.data.data);
   },
 };

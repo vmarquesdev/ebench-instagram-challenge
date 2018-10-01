@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { FilesCollection } from 'meteor/ostrio:files';
-import { queues, INSERT_TAG } from '../../worker/queues';
+import { queues, TAG_RATE_LIMITER, INSERT_TAG } from '../../worker/queues';
 
 const csv = require('fast-csv');
 
@@ -24,8 +24,11 @@ if (Meteor.isServer) {
   Files.on('afterUpload', function(_fileRef) {
     csv.fromPath(_fileRef.path).on('data', function(data) {
       for (let i = 0; i < data.length; i += 1) {
-        queues[INSERT_TAG].add({
-          tag: data[i],
+        queues[TAG_RATE_LIMITER].add({
+          queue: INSERT_TAG,
+          data: {
+            tag: data[i],
+          },
         });
       }
     });
