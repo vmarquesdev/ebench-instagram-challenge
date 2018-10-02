@@ -62,9 +62,14 @@ export default class App extends Component {
 
     return (
       <div className="wrapper">
-        {showConnectionIssue && !connected
-          ? 'Trying to connect, There seems to be a connection issue'
-          : null}
+        {showConnectionIssue && !connected ? (
+          <span className="connection-issue">
+            Trying to connect,
+            <br />
+            {' '}
+There seems to be a connection issue
+          </span>
+        ) : null}
 
         <div className="sidebar">
           <TagsSidebar tags={tags} />

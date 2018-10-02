@@ -8,14 +8,6 @@ class TagsCollection extends Mongo.Collection {
   insert(doc, callback) {
     const ourDoc = doc;
     ourDoc.createdAt = new Date();
-
-    queues[MEDIAS_RATE_LIMITER].add({
-      queue: UPDATE_TAG_MEDIAS,
-      data: {
-        tag: doc.name,
-      },
-    });
-
     return super.insert(ourDoc, callback);
   }
 }
@@ -50,7 +42,11 @@ Tags.schema = new SimpleSchema({
     type: Number,
     defaultValue: 0,
   },
-  lastUnScyncMediaCount: {
+  apiMediaCount: {
+    type: Number,
+    defaultValue: 0,
+  },
+  unListedMediaCount: {
     type: Number,
     defaultValue: 0,
   },
@@ -70,12 +66,12 @@ Tags.publicFields = {
   updated: 1,
   lastSync: 1,
   mediaCount: 1,
-  lastUnScyncMediaCount: 1,
+  unListedMediaCount: 1,
   createdAt: 1,
 };
 
 Tags.helpers({
-  medias(tag) {
-    return Medias.find({ tags: tag || this.name });
+  medias() {
+    return Medias.find({ tags: this.name }, { sort: { createdAt: -1 }, fields: Medias.fields });
   },
 });

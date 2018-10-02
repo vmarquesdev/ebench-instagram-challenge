@@ -14,9 +14,22 @@ import { Tags } from '../api/tags/tags.js';
 import mediasCountDenormalizer from '../api/tags/mediasCountDenormalizer.js';
 import { Medias } from '../api/medias/medias.js';
 
+// const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
+const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
+
 export const processorInitialisers = {
   [RAKE_TAGS]: () => async () => {
-    const tags = Tags.find({ updated: true }).fetch();
+    const tags = Tags.find(
+      { updated: true },
+      {
+        fields: {
+          _id: 1,
+          name: 1,
+          mediaCount: 1,
+          unListedMediaCount: 1,
+        },
+      },
+    ).fetch();
 
     console.log('Init check tags');
 
@@ -25,11 +38,7 @@ export const processorInitialisers = {
         queues[TAG_RATE_LIMITER].add({
           queue: UPDATE_TAG_COUNT,
           data: {
-            tag: {
-              _id: tags[i]._id,
-              name: tags[i].name,
-              mediaCount: tags[i].mediaCount,
-            },
+            tag: tags[i],
           },
         });
       }
@@ -38,94 +47,145 @@ export const processorInitialisers = {
   [INSERT_TAG]: () => async (job) => {
     const { tag } = job.data;
 
-    if (job.data.error) console.log(job.data.error); /* eslint-disable-line */
-
     const tagExists = Tags.find({ name: tag }).count();
 
     if (!tagExists) {
-      HTTP.get(`http://localhost:9000/v1/tags/${tag}`, {}, (error, response) => {
-        if (!error) {
-          const returnedTagtag = response.data.data;
+      HTTP.get(
+        `${INSTAGRAM_API_ENDPOINT}${tag}?&access_token=1354295816.448c75f.8f30fe849ead4e72b98f3b42a041826d`,
+        {},
+        (httpGetError, response) => {
+          if (!httpGetError) {
+            const returnedTagtag = response.data.data;
 
-          if (returnedTagtag.media_count) {
-            Tags.insert({
-              name: returnedTagtag.name,
-              lastUnScyncMediaCount: returnedTagtag.media_count,
+            if (returnedTagtag.media_count) {
+              try {
+                Tags.insert({
+                  name: returnedTagtag.name,
+                  apiMediaCount: returnedTagtag.media_count,
+                });
+
+                queues[MEDIAS_RATE_LIMITER].add({
+                  queue: UPDATE_TAG_MEDIAS,
+                  data: {
+                    tag: returnedTagtag.name,
+                  },
+                });
+              } catch (collectionInsertCatchError) {
+                /* eslint-disable no-alert, no-console */
+                console.log(`TAG: ${tag.name}`);
+                console.log({
+                  domain: `WARNING ${new Date().toString()}: worker.processors.INSERT_TAG.collectionInsertCatchError`,
+                  collectionInsertCatchError,
+                });
+                /* eslint-enable no-alert, no-console */
+
+                queues[TAG_RATE_LIMITER].add({
+                  queue: INSERT_TAG,
+                  data: {
+                    tag,
+                  },
+                });
+              }
+            }
+          } else {
+            /* eslint-disable no-alert, no-console */
+            console.log(`TAG: ${tag.name}`);
+            console.log({
+              domain: `WARNING ${new Date().toString()}: worker.processors.INSERT_TAG.httpGetError`,
+              httpGetError,
+            });
+            /* eslint-enable no-alert, no-console */
+
+            queues[TAG_RATE_LIMITER].add({
+              queue: INSERT_TAG,
+              data: {
+                tag,
+              },
             });
           }
-        } else {
-          const errorObject = {
-            domain: `ERROR ${new Date().toString()}: worker.processors.INSERT_TAG.httpGetError`,
-            error,
-          };
-
-          queues[TAG_RATE_LIMITER].add({
-            queue: INSERT_TAG,
-            data: {
-              error: errorObject,
-              tag,
-            },
-          });
-        }
-      });
+        },
+      );
     }
   },
   [UPDATE_TAG_COUNT]: () => async (job) => {
-    console.log('Checking counts...');
-
     const { tag } = job.data;
 
-    HTTP.get(`http://localhost:9000/v1/tags/${tag.name}`, {}, (error, response) => {
-      if (!error) {
-        const returnedTag = response.data.data;
+    console.log('Checking counts...');
 
-        if (tag.mediaCount !== returnedTag.media_count) {
-          Tags.update(tag._id, {
-            $set: { updated: false, lastUnScyncMediaCount: returnedTag.media_count },
-          });
+    HTTP.get(
+      `${INSTAGRAM_API_ENDPOINT}${
+        tag.name
+      }?&access_token=1354295816.448c75f.8f30fe849ead4e72b98f3b42a041826d`,
+      {},
+      (httpGetError, response) => {
+        if (!httpGetError) {
+          const returnedTag = response.data.data;
 
-          queues[MEDIAS_RATE_LIMITER].add({
-            queue: UPDATE_TAG_MEDIAS,
-            data: {
-              tag: tag.name,
-            },
+          if (tag.mediaCount + tag.unListedMediaCount !== returnedTag.media_count) {
+            Tags.update(tag._id, {
+              $set: {
+                updated: false,
+                apiMediaCount: returnedTag.media_count,
+              },
+            });
+
+            queues[MEDIAS_RATE_LIMITER].add({
+              queue: UPDATE_TAG_MEDIAS,
+              data: {
+                lastMediaId: Medias.findOne(
+                  { tags: tag.name },
+                  { sort: { createdAt: -1, limit: 1 }, fields: { instagramId: 1 } },
+                ).instagramId,
+                tag: tag.name,
+              },
+            });
+          }
+        } else {
+          /* eslint-disable no-alert, no-console */
+          console.log(`TAG: ${tag.name}`);
+          console.log({
+            domain: `WARNING ${new Date().toString()}: worker.processors.UPDATE_TAG_COUNT.httpGetError`,
+            httpGetError,
           });
+          /* eslint-enable no-alert, no-console */
         }
-      } else {
-        /* eslint-disable no-alert, no-console */
-        console.log(
-          `WARNING ${new Date().toString()}: worker.processors.UPDATE_TAG_COUNT.httpGetError`,
-        );
-        console.log(`TAG: ${tag.name}`);
-        console.log(error);
-        /* eslint-enable no-alert, no-console */
-      }
-    });
+      },
+    );
   },
   [UPDATE_TAG_MEDIAS]: () => async (job) => {
     let tag = Tags.findOne({ name: job.data.tag });
-    const endpoint = job.data.nextUrl || `http://localhost:9000/v1/tags/${tag.name}/media/recent`;
+    const endpoint = job.data.nextUrl
+      || `${INSTAGRAM_API_ENDPOINT}${
+        tag.name
+      }/media/recent?count=33&access_token=223835195.631ddc9.d1c64501404549c2a8c26d002f8f08f5`;
 
     console.log(`Init update ${job.data.tag}...`);
     console.log(endpoint);
 
-    HTTP.get(endpoint, {}, (error, response) => {
-      if (!error) {
+    HTTP.get(endpoint, {}, (httpGetError, response) => {
+      if (!httpGetError) {
         let tags = [];
+        let isUpdating = true;
+        const { lastMediaId } = job.data;
 
         response.data.data.forEach((mediaMetadata) => {
-          try {
-            Medias.insert({ metadata: mediaMetadata });
-            tags = tags.concat(mediaMetadata.tags);
-          } catch (e) {
-            /* eslint-disable no-alert, no-console */
-            console.log(
-              `WARNING ${new Date().toString()}: worker.processors.UPDATE_TAG_MEDIAS.collectionInsertCatch`,
-            );
-            console.log(`MAIN TAG: ${tag.name}`);
-            console.log(mediaMetadata);
-            console.log(e);
-            /* eslint-enable no-alert, no-console */
+          if (lastMediaId === mediaMetadata.id) isUpdating = false;
+
+          // Test else case
+          if (isUpdating) {
+            try {
+              Medias.insert({ metadata: mediaMetadata });
+              tags = tags.concat(mediaMetadata.tags);
+            } catch (collectionInsertCatchError) {
+              /* eslint-disable no-alert, no-console */
+              console.log(`TAG: ${tag.name}`);
+              console.log(mediaMetadata);
+              console.log({
+                domain: `WARNING ${new Date().toString()}: worker.processors.UPDATE_TAG_MEDIAS.collectionInsertCatchError`,
+                collectionInsertCatchError,
+              });
+              /* eslint-enable no-alert, no-console */
+            }
           }
         });
 
@@ -134,35 +194,41 @@ export const processorInitialisers = {
 
         tag = Tags.findOne({ name: tag.name });
 
-        if (tag.lastUnScyncMediaCount > tag.mediaCount) {
+        if (isUpdating && _.has(response.data.pagination, 'next_url')) {
           queues[MEDIAS_RATE_LIMITER].add({
             queue: UPDATE_TAG_MEDIAS,
             data: {
+              lastMediaId,
               nextUrl: response.data.pagination.next_url,
               tag: tag.name,
             },
           });
         } else {
           Tags.update(tag._id, {
-            $set: { lastUnScyncMediaCount: 0, updated: true, lastSync: new Date() },
+            $set: {
+              unListedMediaCount: tag.apiMediaCount - tag.mediaCount,
+              lastSync: new Date(),
+              updated: true,
+            },
           });
         }
       } else {
-        const errorObject = {
-          domain: `ERROR ${new Date().toString()}: worker.processors.UPDATE_TAG_MEDIAS.httpGetError`,
-          error,
-        };
+        /* eslint-disable no-alert, no-console */
+        console.log(`TAG: ${tag.name}`);
+        console.log(`TAG MEDIAS PAGE: ${endpoint}`);
+        console.log({
+          domain: `WARNING ${new Date().toString()}: worker.processors.UPDATE_TAG_MEDIAS.httpGetError`,
+          httpGetError,
+        });
+        /* eslint-enable no-alert, no-console */
 
         queues[MEDIAS_RATE_LIMITER].add({
           queue: UPDATE_TAG_MEDIAS,
           data: {
-            error: errorObject,
             nextUrl: endpoint,
             tag: tag.name,
           },
         });
-
-        // throw new Error(errorObject.domain);
       }
     });
 

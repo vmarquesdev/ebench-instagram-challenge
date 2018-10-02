@@ -22,11 +22,12 @@ export default class TagPage extends Component {
       Medias = <span>This tag does not have medias yet</span>;
     } else {
       Medias = medias.map(media => (
-        <div
-          key={media._id}
-          className="media-item"
-          style={{ backgroundImage: `url(${media.thumbUrl})` }}
-        />
+        <div key={media._id} className="media-item">
+          <div className="media-item__bg" style={{ backgroundImage: `url(${media.thumbUrl})` }} />
+          <span className="media-item__date">
+            {moment(media.createdAt).format('MMM Do YY, h:mm a')}
+          </span>
+        </div>
       ));
     }
 

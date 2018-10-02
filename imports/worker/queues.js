@@ -9,8 +9,14 @@ export const UPDATE_TAG_COUNT = 'UPDATE_TAG_COUNT';
 export const UPDATE_TAG_MEDIAS = 'UPDATE_TAG_MEDIAS';
 
 export const queues = {
-  [TAG_RATE_LIMITER]: new Queue(TAG_RATE_LIMITER, 'redis://127.0.0.1:6379'),
-  [MEDIAS_RATE_LIMITER]: new Queue(MEDIAS_RATE_LIMITER, 'redis://127.0.0.1:6379'),
+  [TAG_RATE_LIMITER]: new Queue(TAG_RATE_LIMITER, {
+    redis: 'redis://127.0.0.1:6379',
+    limiter: { max: 450, duration: 60 * 60 * 1000 },
+  }),
+  [MEDIAS_RATE_LIMITER]: new Queue(MEDIAS_RATE_LIMITER, {
+    redis: 'redis://127.0.0.1:6379',
+    limiter: { max: 25, duration: 60 * 60 * 1000 },
+  }),
   [RAKE_TAGS]: new Queue(RAKE_TAGS, 'redis://127.0.0.1:6379'),
   [INSERT_TAG]: new Queue(INSERT_TAG, 'redis://127.0.0.1:6379'),
   [UPDATE_TAG_COUNT]: new Queue(UPDATE_TAG_COUNT, 'redis://127.0.0.1:6379'),

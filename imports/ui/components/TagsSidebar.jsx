@@ -53,13 +53,17 @@ export default class TagsSidebar extends Component {
         {' '}
         {moment(tag.lastSync).format('MMMM Do YYYY, h:mm a') || 'Is the first Sync'}
         <br />
+        API Medias Count:
+        {' '}
+        {tag.apiMediaCount}
+        <br />
         Media Count:
         {' '}
         {tag.mediaCount}
         <br />
-        Last Un Sync Media Count:
+        Un Listed Media Count:
         {' '}
-        {tag.lastUnScyncMediaCount}
+        {tag.unListedMediaCount}
         <br />
         Created At:
         {' '}

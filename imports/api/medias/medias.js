@@ -30,7 +30,7 @@ Medias.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
   },
   instagramId: {
-    type: Number,
+    type: String,
     unique: true,
   },
   thumbUrl: {
