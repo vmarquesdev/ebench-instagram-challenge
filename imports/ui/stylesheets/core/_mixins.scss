@@ -1,0 +1,78 @@
+/* CORE: MIXINS
+   ============================= */
+
+@mixin transition-delay($transition) {
+  -webkit-transition: $transition;
+  transition: $transition;
+}
+
+@mixin input-placeholder($color) {
+  &::-webkit-input-placeholder {
+    color: $color;
+  }
+
+  &::-moz-placeholder {
+    color: $color;
+  }
+
+  &:-ms-input-placeholder {
+    color: $color;
+  }
+
+  &:-moz-placeholder {
+    color: $color;
+  }
+}
+
+@mixin bgcover {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@mixin absolute {
+  position: absolute;
+  height: 100%;
+  bottom: 0;
+  width: 100%;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+
+@mixin center {
+  -webkit-transform: rotate(-50%);
+  transform: translateX(-50%);
+  position: absolute;
+  left: 50%;
+}
+
+@mixin middle {
+  -webkit-transform: rotate(-50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+@mixin hidden {
+  white-space: nowrap;
+  -webkit-clip-path: polygon(0 0,0 0,0 0,0 0);
+          clip-path: polygon(0 0,0 0,0 0,0 0);
+  position: absolute!important;
+  overflow: hidden;
+  height: 1px;
+  width: 1px;
+  clip: rect(1px,1px,1px,1px);
+}
+
+@mixin navy-blue-gradient01 {
+  background: linear-gradient(45deg, #080C15 0%, #1C222E 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#080C15', endColorstr='#1C222E', GradientType=1);
+}
+
+@mixin navy-blue-gradient02 {
+  background: -webkit-gradient(linear, left top, right top, from(#222938), to(#212834));
+  background: linear-gradient(to right, #222938 0%, #212834 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#222938', endColorstr='#212834', GradientType=1)
+}

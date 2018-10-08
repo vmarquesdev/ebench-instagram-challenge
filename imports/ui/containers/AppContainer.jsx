@@ -10,6 +10,6 @@ export default withTracker(() => {
   return {
     loading: !tagsSub.ready(),
     connected: Meteor.status().connected,
-    tags: Tags.find().fetch(),
+    tags: Tags.find({}, { sort: { createdAt: -1 }, fields: Tags.publicFields }).fetch(),
   };
 })(App);

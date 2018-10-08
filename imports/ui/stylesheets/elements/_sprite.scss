@@ -1,0 +1,15 @@
+/* ELEMENTS: SPRITES
+   ============================= */
+.sprite {
+  stroke-width: 0;
+  display: table;
+  stroke: currentColor;
+  height: 5.45vh;
+  width: 5.45vh;
+  fill: currentColor;
+}
+
+.sprite--micro {
+  height: 3vh;
+  width: 3vh;
+}

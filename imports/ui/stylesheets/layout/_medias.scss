@@ -1,0 +1,22 @@
+.medias-panel {  
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+
+  .medias-panel__content {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    display: grid;
+  }
+}
+
+.medias-panel__header {
+  @include navy-blue-gradient02;
+  position: -webkit-sticky;
+  position: sticky;
+  padding: 2.1vh;
+  top: 0;
+}

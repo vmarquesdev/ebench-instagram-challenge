@@ -1,0 +1,57 @@
+/* COMPONENTS: RATE LIMITERS
+   ============================= */
+
+.rate-limiters {
+  text-transform: uppercase;
+  position: absolute;
+  bottom: 2vh;
+  right: 2vh;
+
+  -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+          box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+
+
+  span {
+    background-color: #1BB500;
+    font-weight: 400;
+    font-size: $font-size-xs;
+    padding: .5vh 1vh;
+    color: #FFFFFF;
+
+    &:first-of-type {
+      border-bottom: 1px solid rgba(255,255,255,.3);
+      border-radius: 1vh 1vh 0 0;
+    }
+
+    &:last-of-type {
+      border-radius: 0 0 1vh 1vh;
+    }
+
+    &.rate-limited {
+      background-color: #BC5157;
+    }
+
+    svg {
+      margin-right: .75vh;
+    }
+
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}

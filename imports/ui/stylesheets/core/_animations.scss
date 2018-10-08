@@ -1,0 +1,79 @@
+/* ANIMATION MIXIN
+   ============================= */
+@mixin animation($animate...) {
+  $max: length($animate);
+  $animations: '';
+
+  @for $i from 1 through $max {
+    $animations: #{$animations + nth($animate, $i)};
+
+    @if $i < $max {
+      $animations: #{$animations + ', '};
+    }
+  }
+  -webkit-animation: $animations;
+  animation: $animations;
+}
+
+@mixin keyframes($animationName) {
+  /* autoprefixer: off */
+  @-webkit-keyframes #{$animationName} {
+    @content;
+  }
+  @-moz-keyframes #{$animationName} {
+    @content;
+  }
+  @-o-keyframes #{$animationName} {
+    @content;
+  }
+  @keyframes #{$animationName} {
+    @content;
+  }
+}
+
+/* ANIMATIONS
+    ============================= */
+@include keyframes(scale-infinite) {
+  0%,
+  20%,
+  40%,
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  10% {
+    -webkit-transform: scale(1.15);
+    transform: scale(1.15);
+  }
+
+  // 50% {
+  //   -webkit-transform: rotate(360deg);
+  //           transform: rotate(360deg);
+  // }
+  // 60% {
+  //   -webkit-transform: rotate(0deg);
+  //           transform: rotate(0deg);
+  // }
+}
+
+@include keyframes(rotate-infinite) {
+  0% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+}
+
+@include keyframes(octocat-wave) {
+  0%,100%{
+    -webkit-transform:rotate(0);
+    transform:rotate(0);
+  }
+  20%,60%{
+    -webkit-transform:rotate(-25deg);
+    transform:rotate(-25deg);
+  }
+  40%,80%{
+    -webkit-transform:rotate(10deg);
+    transform:rotate(10deg);
+  }
+}

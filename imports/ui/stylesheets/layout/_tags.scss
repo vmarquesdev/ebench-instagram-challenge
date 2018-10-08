@@ -1,0 +1,65 @@
+/* LAYOUT: TAGS
+   ============================= */
+.tags-search-form {
+  background-color: $myp-navy-blue01;
+  width: 100%;
+
+  .form__input-group {
+    height: 100%;
+  }
+
+  .input {
+    background-color: transparent;
+    height: 100%;
+  }
+}
+
+.form-upload {
+  @include transition-delay(all .5s);
+  margin-right: -10.85vh;
+
+  .upload-button {
+    width: 20.5vh;
+
+    .sprite {
+      margin-right: 2vh;
+    }
+  }
+
+  &:hover {
+    margin-right: 0;
+  }
+}
+
+.tags-container {
+  .tags-container__title {
+    @include navy-blue-gradient02;
+    position: -webkit-sticky;
+    position: sticky;
+    padding: 1.3vh 2vh;
+    z-index: 9;
+    top: 0;
+  }
+
+  .tags {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1.5vh;
+    padding: 1.5vh;
+    display: grid;
+    height: 100%;
+  }
+
+  .tags--sync {
+    overflow-y: scroll;
+    max-height: 25vh;
+
+    .tag-item {
+      .tag-item__unlistedcount,
+      .tag-item__apicount {
+        display: -webkit-box !important;
+        display: -ms-flexbox !important;
+        display: flex !important;
+      }
+    }
+  }
+}

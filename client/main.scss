@@ -1,6 +1,19 @@
-body {
-  font-family: sans-serif;
-}
+@import "{}/imports/ui/stylesheets/core/vars";
+@import "{}/imports/ui/stylesheets/bootstrap/custom";
 
-// Components
-@import "{}/imports/ui/stylesheets/main";
+@import "{}/imports/ui/stylesheets/core/animations";
+@import "{}/imports/ui/stylesheets/core/mixins";
+
+@import "{}/imports/ui/stylesheets/elements/sprite";
+@import "{}/imports/ui/stylesheets/elements/buttons";
+@import "{}/imports/ui/stylesheets/elements/forms";
+
+@import "{}/imports/ui/stylesheets/components/tag";
+@import "{}/imports/ui/stylesheets/components/media";
+@import "{}/imports/ui/stylesheets/components/rate-limiters";
+
+@import "{}/imports/ui/stylesheets/layout/page";
+@import "{}/imports/ui/stylesheets/layout/tags";
+@import "{}/imports/ui/stylesheets/layout/medias";
+
+@import "{}/imports/ui/stylesheets/utilities/general";

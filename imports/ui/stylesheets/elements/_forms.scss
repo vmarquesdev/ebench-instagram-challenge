@@ -1,0 +1,43 @@
+/* ELEMENTS: FORMS
+   ============================= */
+
+.form {
+  label {
+    margin: 0;
+  }
+}
+
+.form__input-group {
+  overflow: hidden;
+  padding: 0 1.3vh;
+  color: rgba(174,186,210, .5);
+
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+/* INPUTS */
+.input {
+  @include input-placeholder(rgba(174,186,210, .5));
+  background-clip: padding-box;
+  border: 0;
+  color: rgba(174,186,210, .5);
+  width: 100%;
+
+  &:focus {
+    @include input-placeholder(rgba(174,186,210, 1));
+    // border-color: rgba(17, 200, 187, 1);
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    outline: 0;
+    color: rgba(174,186,210, 1);
+  }
+}

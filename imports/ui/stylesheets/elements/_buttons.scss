@@ -1,0 +1,105 @@
+/* BUTTONS
+   ============================= */
+.button {
+  @include navy-blue-gradient02;
+  @include transition-delay(all .35s linear);
+  vertical-align: middle;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  text-align: center;
+  padding: 1vh 2vh;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: $myp-navy-blue03;
+
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+
+
+  &:focus {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    outline: 0;
+  }
+
+  &:disabled,
+  &.button--disabled {
+    cursor: default;
+  }
+
+  // Opinionated: add "hand" cursor to non-disabled .btn elements
+  &:not(:disabled):not(.button--disabled) {
+    cursor: pointer;
+  }
+
+  &.button--active, &:active, &:focus, &:hover {
+    text-decoration: none;
+  }
+
+  // &:not(:disabled):not(.button--disabled):hover,
+  // &:not(:disabled):not(.button--disabled).button--active {
+  //   background: #FFFFFF radial-gradient(circle, transparent 1%, #FFFFFF 1%) center/15000%;
+  //   color: $myp-wine !important;
+  // }
+  //
+  // &:not(:disabled):not(.button--disabled):active,
+  // &:not(:disabled):not(.button--disabled).button--active {
+  //   background-color: rgba(71, 45, 90, .5);
+  //   background-size: 100%;
+  //   -webkit-transition: background 0s;
+  //   transition: background 0s;
+  // }
+}
+
+a.button.button--disabled, fieldset:disabled a.button {
+  pointer-events: none;
+}
+
+// .button--wine-light {
+//   background-color: $myp-wine-light;
+//   border-color: $myp-wine-light;
+//
+//   &:not(:disabled):not(.button--disabled):hover,
+//   &:not(:disabled):not(.button--disabled).button--active {
+//     color: $myp-wine-light !important;
+//   }
+//
+//   &:not(:disabled):not(.button--disabled):active,
+//   &:not(:disabled):not(.button--disabled).button--active {
+//     background-color: rgba(121, 50, 173, .5);
+//   }
+// }
+//
+// .button--turquoise {
+//   background-color: $myp-turquoise;
+//   border-color: $myp-turquoise;
+//
+//   &:not(:disabled):not(.button--disabled):hover,
+//   &:not(:disabled):not(.button--disabled).button--active {
+//     color: $myp-turquoise !important;
+//   }
+//
+//   &:not(:disabled):not(.button--disabled):active,
+//   &:not(:disabled):not(.button--disabled).button--active {
+//     background-color: rgba(17, 200, 187, .5);
+//   }
+//
+//   &:disabled,
+//   &.button--disabled {
+//     background-color: rgba(17, 200, 187, .1);
+//     border-color: rgba(17, 200, 187, .5);
+//     color: rgba(17, 200, 187, .7);
+//
+//     // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.;
+//     opacity: .85
+//   }
+// }

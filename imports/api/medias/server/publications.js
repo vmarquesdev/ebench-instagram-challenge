@@ -6,9 +6,10 @@ import { Tags } from '../../tags/tags.js';
 Meteor.publishComposite('medias.inTag', function mediasInTag(params) {
   new SimpleSchema({
     tagId: { type: String },
+    limit: { type: Number },
   }).validate(params);
 
-  const { tagId } = params;
+  const { tagId, limit } = params;
 
   return {
     find() {
@@ -18,7 +19,7 @@ Meteor.publishComposite('medias.inTag', function mediasInTag(params) {
     children: [
       {
         find(tag) {
-          return tag.medias();
+          return tag.medias(limit);
         },
       },
     ],

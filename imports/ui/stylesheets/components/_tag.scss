@@ -1,0 +1,121 @@
+/* COMPONENTS: TAG
+   ============================= */
+.tags--sync .tag-item {
+  .tag-item__status svg {
+    fill: #FFB001 !important;
+
+    -webkit-animation: rotate-infinite 800ms infinite linear !important;
+            animation: rotate-infinite 800ms infinite linear !important;
+  }
+}
+
+.tag-item {
+  @include transition-delay(all .35s linear);
+  background-color: $myp-navy-blue01;
+  border-radius: 1vh;
+  font-size: $font-size-xs;
+  color: rgba(174,186,210, .5);
+
+  &:focus {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    outline: 0;
+  }
+
+  &:hover {
+    text-decoration: none;
+    color: rgba(174,186,210, .5);
+
+    -webkit-transform: scale(1.05);
+            transform: scale(1.05);
+  }
+
+  .tag-item__info {
+    .tag-item__status {
+      svg {
+        // @include transition-delay(all .2s ease-in-out);
+        margin: 0 auto;
+        fill: #6EBA01;
+
+        -webkit-animation: scale-infinite 5s infinite ease-in-out;
+                animation: scale-infinite 5s infinite ease-in-out;
+      }
+    }
+
+    .tag-item__name {
+      letter-spacing: .5px;
+      margin-bottom: .85vh;
+      font-weight: 600;
+      text-align: center;
+      font-size: $font-size;
+      color: rgba(255, 255, 255, 1);
+    }
+
+    span {
+      padding: 0 2vh;
+      display: block;
+
+      &:first-of-type {
+        padding-top: 1vh;
+      }
+    }
+  }
+
+  &:hover {
+    .tag-item__unlistedcount,
+    .tag-item__apicount {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+    }
+  }
+
+  .tag-item__lastsync {
+    -webkit-box-pack: center !important;
+        -ms-flex-pack: center !important;
+            justify-content: center !important;
+  }
+
+  .count {
+    font-weight: 400;
+  }
+
+  .tag-item__mediacount {
+    .count {
+      color: #83A76B;
+    }
+  }
+
+  .tag-item__unlistedcount {
+    .count {
+      color: #BC5157;
+    }
+  }
+
+  .tag-item__unlistedcount,
+  .tag-item__apicount {
+    display: none !important;
+  }
+
+  .tag-item__counts {
+    div {
+      text-transform: uppercase;
+      border-top: 1px solid rgba(174,186,210, .5);
+      padding: 0.35vh 2vh;
+
+      &:first-of-type {
+        border: none;
+      }
+
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+    }
+  }
+}
