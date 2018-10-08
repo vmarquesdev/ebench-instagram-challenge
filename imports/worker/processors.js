@@ -10,6 +10,10 @@ import {
   UPDATE_TAG_MEDIAS,
 } from './queues';
 
+import rakeTags from './processors/rakeTags.js';
+import createTag from './processors/createTag.js';
+import updateTagCount from './processors/updateTagCount.js';
+
 import { Tags } from '../api/tags/tags.js';
 import mediasCountDenormalizer from '../api/tags/mediasCountDenormalizer.js';
 import { Medias } from '../api/medias/medias.js';
@@ -31,126 +35,13 @@ export const processorInitialisers = {
       },
     ).fetch();
 
-    console.log('Init check tags');
-
-    if (tags) {
-      for (let i = 0; i < tags.length; i += 1) {
-        queues[TAG_RATE_LIMITER].add({
-          queue: UPDATE_TAG_COUNT,
-          data: {
-            tag: tags[i],
-          },
-        });
-      }
-    }
+    rakeTags(tags);
   },
   [INSERT_TAG]: () => async (job) => {
-    const { tag } = job.data;
-
-    const tagExists = Tags.find({ name: tag }).count();
-
-    if (!tagExists) {
-      HTTP.get(
-        `${INSTAGRAM_API_ENDPOINT}${tag}?&access_token=1354295816.448c75f.8f30fe849ead4e72b98f3b42a041826d`,
-        {},
-        (httpGetError, response) => {
-          if (!httpGetError) {
-            const returnedTagtag = response.data.data;
-
-            if (returnedTagtag.media_count) {
-              try {
-                Tags.insert({
-                  name: returnedTagtag.name,
-                  apiMediaCount: returnedTagtag.media_count,
-                });
-
-                queues[MEDIAS_RATE_LIMITER].add({
-                  queue: UPDATE_TAG_MEDIAS,
-                  data: {
-                    tag: returnedTagtag.name,
-                  },
-                });
-              } catch (collectionInsertCatchError) {
-                /* eslint-disable no-alert, no-console */
-                console.log(`TAG: ${tag.name}`);
-                console.log({
-                  domain: `WARNING ${new Date().toString()}: worker.processors.INSERT_TAG.collectionInsertCatchError`,
-                  collectionInsertCatchError,
-                });
-                /* eslint-enable no-alert, no-console */
-
-                queues[TAG_RATE_LIMITER].add({
-                  queue: INSERT_TAG,
-                  data: {
-                    tag,
-                  },
-                });
-              }
-            }
-          } else {
-            /* eslint-disable no-alert, no-console */
-            console.log(`TAG: ${tag.name}`);
-            console.log({
-              domain: `WARNING ${new Date().toString()}: worker.processors.INSERT_TAG.httpGetError`,
-              httpGetError,
-            });
-            /* eslint-enable no-alert, no-console */
-
-            queues[TAG_RATE_LIMITER].add({
-              queue: INSERT_TAG,
-              data: {
-                tag,
-              },
-            });
-          }
-        },
-      );
-    }
+    createTag(job.data.tag);
   },
   [UPDATE_TAG_COUNT]: () => async (job) => {
-    const { tag } = job.data;
-
-    console.log('Checking counts...');
-
-    HTTP.get(
-      `${INSTAGRAM_API_ENDPOINT}${
-        tag.name
-      }?&access_token=1354295816.448c75f.8f30fe849ead4e72b98f3b42a041826d`,
-      {},
-      (httpGetError, response) => {
-        if (!httpGetError) {
-          const returnedTag = response.data.data;
-
-          if (tag.mediaCount + tag.unListedMediaCount !== returnedTag.media_count) {
-            Tags.update(tag._id, {
-              $set: {
-                updated: false,
-                apiMediaCount: returnedTag.media_count,
-              },
-            });
-
-            queues[MEDIAS_RATE_LIMITER].add({
-              queue: UPDATE_TAG_MEDIAS,
-              data: {
-                lastMediaId: Medias.findOne(
-                  { tags: tag.name },
-                  { sort: { createdAt: -1, limit: 1 }, fields: { instagramId: 1 } },
-                ).instagramId,
-                tag: tag.name,
-              },
-            });
-          }
-        } else {
-          /* eslint-disable no-alert, no-console */
-          console.log(`TAG: ${tag.name}`);
-          console.log({
-            domain: `WARNING ${new Date().toString()}: worker.processors.UPDATE_TAG_COUNT.httpGetError`,
-            httpGetError,
-          });
-          /* eslint-enable no-alert, no-console */
-        }
-      },
-    );
+    updateTagCount(job.data.tag);
   },
   [UPDATE_TAG_MEDIAS]: () => async (job) => {
     let tag = Tags.findOne({ name: job.data.tag });

@@ -16,7 +16,7 @@ export default class App extends Component {
     const newState = { defaultPath: null, redirectTo: null };
     if (!nextProps.loading) {
       const tag = Tags.findOne();
-      newState.defaultPath = `/tags/${tag._id}`;
+      newState.defaultPath = tag ? `/tags/${tag._id}` : '/tags';
     }
     return newState;
   }
