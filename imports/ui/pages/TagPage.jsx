@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Loading from '../components/Loading.jsx';
 import Icon from '../components/Icon.jsx';
 
 export default class TagPage extends Component {
@@ -63,17 +64,15 @@ export default class TagPage extends Component {
               style={{ backgroundImage: `url(${mediaViewItem.thumbUrl})` }}
             />
 
-            <div className="content__body">
-              <div className="media-view__info">
-                <span className="media__tags">
-                  <strong>TAGS:</strong>
-                  {' '}
-                  {mediaViewItem.tags.map(tagName => tagName)}
-                </span>
-                <pre className="media__metadata">
-                  {JSON.stringify(JSON.parse(mediaViewItem.metadata), null, 4)}
-                </pre>
-              </div>
+            <div className="media-view__info">
+              <span className="media__tags">
+                <strong>METADATA</strong>
+              </span>
+              <textarea
+                className="media__metadata"
+                defaultValue={JSON.stringify(JSON.parse(mediaViewItem.metadata), null, 4)}
+                disabled
+              />
             </div>
           </div>
         </div>
@@ -92,9 +91,7 @@ export default class TagPage extends Component {
             </span>
           </div>
 
-          <div className="medias-panel__content">
-            {loading ? <span className="loading">Loading medias...</span> : Medias}
-          </div>
+          <div className="medias-panel__content">{loading ? <Loading /> : Medias}</div>
         </div>
       </div>
     );

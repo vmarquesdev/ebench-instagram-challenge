@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import { Tags } from '../../api/tags/tags.js';
+import Loading from '../components/Loading.jsx';
+import RateLimiterStatus from '../components/RateLimiterStatus.jsx';
 import TagsDashboard from '../components/TagsDashboard.jsx';
 import TagsPageContainer from '../containers/TagsPageContainer.jsx';
 
@@ -50,7 +52,9 @@ export default class App extends Component {
   }
 
   renderContent(location) {
-    const { connected, tags, loading } = this.props;
+    const {
+      connected, tags, loading, rateLimitersStatus,
+    } = this.props;
     const { showConnectionIssue } = this.state;
 
     return (
@@ -80,8 +84,17 @@ export default class App extends Component {
           <TagsDashboard tags={tags} />
 
           <div className="content__side content__right">
+            {rateLimitersStatus ? (
+              <RateLimiterStatus
+                tagsLimited={rateLimitersStatus.tagsLimited}
+                mediasLimited={rateLimitersStatus.mediasLimited}
+              />
+            ) : (
+              ''
+            )}
+
             {loading ? (
-              <span>Loading...</span>
+              <Loading />
             ) : (
               <TransitionGroup className="content__body">
                 <CSSTransition key={location.key} classNames="fade" timeout={200}>
@@ -113,6 +126,7 @@ export default class App extends Component {
 }
 
 App.propTypes = {
+  // rateLimitersStatus: PropTypes.object.isRequired,
   connected: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
   tags: PropTypes.array,

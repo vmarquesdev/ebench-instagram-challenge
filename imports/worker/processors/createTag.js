@@ -29,8 +29,8 @@ import { Tags } from '../../api/tags/tags.js';
 //      3. Se a requisção der certo deve retornar a tag inserida.
 /* eslint-enable */
 
-const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
-// const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
+// const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
+const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
 
 const printError = (tag, error, errorType) => {
   /* eslint-disable no-alert, no-console */
@@ -50,19 +50,25 @@ const insertTag = (tag, returnedTag) => {
         apiMediaCount: returnedTag.media_count,
       });
 
-      queues[MEDIAS_RATE_LIMITER].add({
-        queue: UPDATE_TAG_MEDIAS,
-        data: {
-          tag: returnedTag.name,
+      queues[MEDIAS_RATE_LIMITER].add(
+        {
+          queue: UPDATE_TAG_MEDIAS,
+          data: {
+            tag: returnedTag.name,
+          },
         },
-      });
+        { removeOnComplete: true },
+      );
     } catch (collectionInsertCatchError) {
-      queues[TAG_RATE_LIMITER].add({
-        queue: INSERT_TAG,
-        data: {
-          tag,
+      queues[TAG_RATE_LIMITER].add(
+        {
+          queue: INSERT_TAG,
+          data: {
+            tag,
+          },
         },
-      });
+        { removeOnComplete: true },
+      );
 
       printError(tag, collectionInsertCatchError, 'collectionInsertCatchError');
     }
@@ -79,12 +85,15 @@ export default (tag) => {
       );
       insertTag(tag, result.data.data);
     } catch (httpGetError) {
-      queues[TAG_RATE_LIMITER].add({
-        queue: INSERT_TAG,
-        data: {
-          tag,
+      queues[TAG_RATE_LIMITER].add(
+        {
+          queue: INSERT_TAG,
+          data: {
+            tag,
+          },
         },
-      });
+        { removeOnComplete: true },
+      );
 
       printError(tag, httpGetError, 'httpGetError');
     }

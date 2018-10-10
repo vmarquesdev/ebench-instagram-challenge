@@ -1,5 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import { Factory } from 'meteor/dburles:factory';
 
 import { Medias } from '../medias/medias.js';
 
@@ -71,11 +72,13 @@ Tags.publicFields = {
   createdAt: 1,
 };
 
+Factory.define('tag', Tags, {});
+
 Tags.helpers({
   medias(limit) {
     const options = { sort: { createdAt: -1 }, fields: Medias.fields };
 
-    if (limit) options.limit = Math.min(limit, 33);
+    if (limit) options.limit = Math.min(limit, 36);
 
     return Medias.find({ tags: this.name }, options);
   },

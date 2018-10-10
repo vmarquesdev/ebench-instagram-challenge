@@ -4,6 +4,7 @@
 .rate-limiters {
   text-transform: uppercase;
   position: absolute;
+  z-index: 1000;
   bottom: 2vh;
   right: 2vh;
 

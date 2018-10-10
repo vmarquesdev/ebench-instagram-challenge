@@ -19,8 +19,8 @@ import { Medias } from '../../api/medias/medias.js';
 //      3. Se a requisção der certo deve retornar a tag inserida.
 /* eslint-enable */
 
-const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
-// const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
+// const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
+const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
 
 const printError = (tag, error, errorType) => {
   /* eslint-disable no-alert, no-console */
@@ -42,16 +42,19 @@ const updateTag = (tag, returnedTag) => {
         },
       });
 
-      queues[MEDIAS_RATE_LIMITER].add({
-        queue: UPDATE_TAG_MEDIAS,
-        data: {
-          lastMediaId: Medias.findOne(
-            { tags: tag.name },
-            { sort: { createdAt: -1, limit: 1 }, fields: { instagramId: 1 } },
-          ).instagramId,
-          tag: tag.name,
+      queues[MEDIAS_RATE_LIMITER].add(
+        {
+          queue: UPDATE_TAG_MEDIAS,
+          data: {
+            lastMediaId: Medias.findOne(
+              { tags: tag.name },
+              { sort: { createdAt: -1, limit: 1 }, fields: { instagramId: 1 } },
+            ).instagramId,
+            tag: tag.name,
+          },
         },
-      });
+        { removeOnComplete: true },
+      );
     } catch (collectionUpdateCatchError) {
       printError(tag.name, collectionUpdateCatchError, 'collectionUpdateCatchError');
     }

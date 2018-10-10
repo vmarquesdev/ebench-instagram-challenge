@@ -23,7 +23,9 @@ const TagItem = (props) => {
         </span>
       </div>
       <div className="tag-item__counts">
-        <div className="tag-item__lastsync">Synced 10.05.18 - 06:50 pm</div>
+        <div className="tag-item__lastsync">
+          {tag.updated ? moment(tag.lastSync).format('MMM Do YY, h:mm a') : 'Synching...'}
+        </div>
 
         <div className="tag-item__mediacount">
           <span>medias count</span>

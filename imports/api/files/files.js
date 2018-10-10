@@ -27,12 +27,15 @@ if (Meteor.isServer) {
       const uniqData = _.uniq(data);
 
       for (let i = 0; i < uniqData.length; i += 1) {
-        queues[TAG_RATE_LIMITER].add({
-          queue: INSERT_TAG,
-          data: {
-            tag: uniqData[i],
+        queues[TAG_RATE_LIMITER].add(
+          {
+            queue: INSERT_TAG,
+            data: {
+              tag: uniqData[i],
+            },
           },
-        });
+          { removeOnComplete: true },
+        );
       }
     });
   });

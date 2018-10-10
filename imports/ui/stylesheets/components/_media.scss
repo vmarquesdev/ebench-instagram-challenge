@@ -22,6 +22,7 @@
   }
 
   .media-view__container {
+    @include navy-blue-gradient02;
     height: 100%;
   }
 
@@ -35,19 +36,23 @@
 
   .media__tags {
     @include navy-blue-gradient02;
-    position: -webkit-sticky;
-    position: sticky;
     padding: 1.3vh 2vh;
     display: block;
     top: 0;
   }
 
+  .media-view__info {
+    height: 100%;
+  }
+
   .media__metadata {
+    background-color: rgba(255,255,255,.85);
     letter-spacing: 1px;
     font-size: $font-size-xs;
     padding: 1.3vh 2vh;
     display: block;
-    height: 100%;
+    height: 36vh;
+    resize: none;
     width: 100%;
   }
 }

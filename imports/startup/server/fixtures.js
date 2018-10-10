@@ -1,5 +1,6 @@
-// import { Meteor } from 'meteor/meteor';
-// import { Tags } from '../../api/tags/tags.js';
+import { Meteor } from 'meteor/meteor';
+import { RateLimitersStatus } from '../../api/rateLimitersStatus/rateLimitersStatus.js';
 
-// if the database is empty on server start, create some seed data.
-// Meteor.startup(() => {});
+Meteor.startup(() => {
+  if (RateLimitersStatus.find().count() === 0) RateLimitersStatus.insert({});
+});
