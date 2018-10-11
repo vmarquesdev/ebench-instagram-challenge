@@ -43,10 +43,18 @@ export default class TagsDashboard extends Component {
       SyncedTagsComponent = Tags({ synchronizing: false, tags: syncedTags });
     }
 
-    return (
+    return tags.length ? (
       <div className="content__body">
         {SyncTagsComponent}
         {SyncedTagsComponent}
+      </div>
+    ) : (
+      <div style={{ position: 'relative', height: '100%' }}>
+        <div className="message-page">
+          <Icon name="upload" className="sprite--lg" />
+          <span className="title">There are no tags</span>
+          <p>Upload the first tags through the button in the search bar.</p>
+        </div>
       </div>
     );
   }

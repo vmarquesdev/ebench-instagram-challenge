@@ -14,7 +14,6 @@ class TagsCollection extends Mongo.Collection {
 
 export const Tags = new TagsCollection('Tags');
 
-// Deny all client-side updates since we will be using methods to manage this collection
 Tags.deny({
   insert() {
     return true;
@@ -58,9 +57,6 @@ Tags.schema = new SimpleSchema({
 
 Tags.attachSchema(Tags.schema);
 
-// This represents the keys from Lists objects that should be published
-// to the client. If we add secret properties to List objects, don't list
-// them here to keep them private to the server.
 Tags.publicFields = {
   _id: 1,
   name: 1,

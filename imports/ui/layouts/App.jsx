@@ -10,6 +10,8 @@ import Loading from '../components/Loading.jsx';
 import RateLimiterStatus from '../components/RateLimiterStatus.jsx';
 import TagsDashboard from '../components/TagsDashboard.jsx';
 import TagsPageContainer from '../containers/TagsPageContainer.jsx';
+import ConnectionNotification from '../components/ConnectionNotification.jsx';
+import NotFoundPage from '../pages/NotFoundPage.jsx';
 
 const CONNECTION_ISSUE_TIMEOUT = 5000;
 
@@ -52,9 +54,7 @@ export default class App extends Component {
   }
 
   renderContent(location) {
-    const {
-      connected, tags, loading, rateLimitersStatus,
-    } = this.props;
+    const { connected, tags, loading, rateLimitersStatus } = this.props; // eslint-disable-line
     const { showConnectionIssue } = this.state;
 
     return (
@@ -80,6 +80,8 @@ export default class App extends Component {
           </svg>
         </a>
 
+        {showConnectionIssue && !connected ? <ConnectionNotification /> : null}
+
         <div className="content">
           <TagsDashboard tags={tags} />
 
@@ -99,11 +101,12 @@ export default class App extends Component {
               <TransitionGroup className="content__body">
                 <CSSTransition key={location.key} classNames="fade" timeout={200}>
                   <Switch location={location}>
+                    <Route exact path="/tags" />
                     <Route
                       path="/tags/:id"
                       render={({ match }) => <TagsPageContainer match={match} />}
                     />
-                    {/* <Route path="/*" render={() => <NotFoundPage {...commonChildProps} />} /> */}
+                    <Route path="/*" render={() => <NotFoundPage />} />
                   </Switch>
                 </CSSTransition>
               </TransitionGroup>
@@ -126,7 +129,6 @@ export default class App extends Component {
 }
 
 App.propTypes = {
-  // rateLimitersStatus: PropTypes.object.isRequired,
   connected: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
   tags: PropTypes.array,

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Loading from '../components/Loading.jsx';
 import Icon from '../components/Icon.jsx';
+import NotFoundPage from './NotFoundPage.jsx';
 
 export default class TagPage extends Component {
   constructor(props) {
@@ -13,7 +14,7 @@ export default class TagPage extends Component {
   }
 
   showMediaView(index) {
-    this.setState({ showMediaView: true, mediaViewItem: this.props.medias[index] });
+    this.setState({ showMediaView: true, mediaViewItem: this.props.medias[index] }); // eslint-disable-line
   }
 
   hideMediaView() {
@@ -21,16 +22,23 @@ export default class TagPage extends Component {
   }
 
   render() {
-    const { tag, loading, medias } = this.props;
+    const {
+      tag, loading, medias, tagExists,
+    } = this.props;
     const { showMediaView } = this.state;
     let { mediaViewItem } = this.state;
 
     let Medias;
     let MediaView;
 
+    if (!tagExists) {
+      return <NotFoundPage />;
+    }
+
     if (!medias || !medias.length) {
       Medias = <span>This tag does not have medias yet</span>;
     } else {
+      /* eslint-disable */
       Medias = medias.map((media, index) => (
         <figure key={media._id} className="media-item">
           <a
@@ -44,6 +52,7 @@ export default class TagPage extends Component {
           </span>
         </figure>
       ));
+      /* eslint-enable */
 
       mediaViewItem = mediaViewItem || medias[0];
       MediaView = (
@@ -99,8 +108,12 @@ export default class TagPage extends Component {
 }
 
 TagPage.propTypes = {
-  tag: PropTypes.object,
+  tagExists: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
   medias: PropTypes.array,
-  loading: PropTypes.bool,
-  tagExists: PropTypes.bool,
+  tag: PropTypes.object.isRequired,
+};
+
+TagPage.defaultProps = {
+  medias: [],
 };

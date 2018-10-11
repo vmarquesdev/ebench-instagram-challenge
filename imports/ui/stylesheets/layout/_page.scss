@@ -59,6 +59,7 @@
 
 .content {
   background-color: $myp-navy-blue05;
+  border-radius: 0 15vh 0 0;
   max-width: 170vh;
   position: relative;
   overflow: hidden;
@@ -115,5 +116,54 @@
   .content__right {
     @include navy-blue-gradient02;
     position: relative;
+  }
+}
+
+.message-page {
+  @include absolute;
+  text-align: center;
+
+  .title {
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 5vh;
+    margin: 3vh 0;
+  }
+
+  -webkit-animation: 4s show;
+          animation: 4s show;
+
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.connection-notification {
+  background-color: rgba(0,0,0,.75);
+  border-radius: 0 15vh 0 0;
+  text-align: center;
+  font-size: $font-size-xs;
+  position: absolute;
+  padding: 2.5vh 2vh;
+  z-index: 1000;
+  right: 9vh;
+  top: 10vh;
+
+  -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+          box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+
+  strong {
+    font-weight: 700;
+    display: block;
   }
 }

@@ -15,7 +15,6 @@ export const queues = {
   }),
   [MEDIAS_RATE_LIMITER]: new Queue(MEDIAS_RATE_LIMITER, {
     redis: 'redis://127.0.0.1:6379',
-    // limiter: { max: 50, duration: 5 * 60 * 1000 },
     limiter: { max: 155, duration: 60 * 60 * 1000 },
   }),
   [RAKE_TAGS]: new Queue(RAKE_TAGS, 'redis://127.0.0.1:6379'),

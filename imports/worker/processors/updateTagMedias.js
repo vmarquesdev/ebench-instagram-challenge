@@ -6,8 +6,8 @@ import { Tags } from '../../api/tags/tags.js';
 import mediasCountDenormalizer from '../../api/tags/mediasCountDenormalizer.js';
 import { Medias } from '../../api/medias/medias.js';
 
-// const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
-const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
+const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
+// const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
 
 const printError = (tag, error, errorType, endpoint = false, metadata = false) => {
   /* eslint-disable no-alert, no-console */

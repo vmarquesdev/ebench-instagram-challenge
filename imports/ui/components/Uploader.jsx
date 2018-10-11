@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -62,7 +63,7 @@ export default class Uploader extends Component {
         //   console.log(`Error during upload: ${error}`);
         // });
 
-        uploadInstance.on('progress', (progress) => {
+        uploadInstance.on('progress', progress => {
           self.setState({
             progress,
           });
@@ -86,7 +87,7 @@ export default class Uploader extends Component {
             className="hidden"
             type="file"
             disabled={inProgress}
-            ref={(c) => {
+            ref={c => {
               this.fileInput = c;
             }}
             onChange={this.uploadIt}

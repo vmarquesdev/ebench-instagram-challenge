@@ -19,8 +19,8 @@ import { Medias } from '../../api/medias/medias.js';
 //      3. Se a requisção der certo deve retornar a tag inserida.
 /* eslint-enable */
 
-// const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
-const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
+const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
+// const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
 
 const printError = (tag, error, errorType) => {
   /* eslint-disable no-alert, no-console */

@@ -21,6 +21,6 @@ const Tags = (props) => {
 export default Tags;
 
 Tags.propTypes = {
-  synchronizing: PropTypes.bool,
-  tags: PropTypes.array,
+  synchronizing: PropTypes.bool.isRequired,
+  tags: PropTypes.array.isRequired,
 };
