@@ -107,6 +107,22 @@ This application uses React for its interface, it was not used Redux because it 
 
 Run `$ npm test` to run the app tests.
 
+## The Briefing
+
+The project is aiming at getting the posts by tags from [Instagram API](https://www.instagram.com/developer/endpoints/tags/#get_tags_media_recent).
+ Then, store the data into MongoDB as json, the format doesn’t matter.
+The input would be uploading a file with a list of tags inside.
+There are several points to note:
+
+1.  Exception handling, specifically for the API requests.
+2.  Rate limit control.
+3.  the project includes Queue job system(bull-js), it has web interface as frontend, queue job handling as backend.
+4.  Feel free to pick any framework/modules you want to use as you see fit.
+5.  this would need you to understand the api doc of Instagram.
+6.  No authentication needed, just a plain page, and CLI app for backend.
+7.  The Instagram API is going to be deprecated, but it serves well as a trial project, also, we could need this in production.
+8.  Optional: pack it up in docker image. Specifically with “docker stack apply”.
+
 ## Author
 
 - **Victor Hugo Marques** - [https://vmarquesdev.github.io](https://vmarquesdev.github.io)
