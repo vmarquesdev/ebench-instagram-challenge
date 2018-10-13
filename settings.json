@@ -1,14 +1,14 @@
 {
   "public": {
-    "HOST": "http://159.203.95.75/"
+    "HOST": "http://localhost:3000"
   },
   "private": {
     "REDIS": "redis://cache",
     "TAG_RATE": 450,
     "TAG_MINUTES_LIMITER": 60,
-    "MEDIAS_RATE": 200,
-    "MEDIAS_MINUTES_LIMITER": 5,
-    "INSTAGRAM_API_ENDPOINT": "http://159.203.102.243/v1/tags/",
+    "MEDIAS_RATE": 150,
+    "MEDIAS_MINUTES_LIMITER": 60,
+    "INSTAGRAM_API_ENDPOINT": "http://api.instagram.com/v1/tags/",
     "INSTAGRAM_API_ACCESS_TOKEN": "223835195.631ddc9.d1c64501404549c2a8c26d002f8f08f5"
   }
 }
