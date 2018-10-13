@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import { HTTP } from 'meteor/http';
 import { queues, MEDIAS_RATE_LIMITER, UPDATE_TAG_MEDIAS } from '../queues';
@@ -6,8 +7,7 @@ import { Tags } from '../../api/tags/tags.js';
 import mediasCountDenormalizer from '../../api/tags/mediasCountDenormalizer.js';
 import { Medias } from '../../api/medias/medias.js';
 
-const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
-// const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
+const { INSTAGRAM_API_ENDPOINT } = Meteor.settings.private;
 
 const printError = (tag, error, errorType, endpoint = false, metadata = false) => {
   /* eslint-disable no-alert, no-console */
@@ -75,8 +75,10 @@ export default (tag, nextUrl, lastMediaId) => {
   const endpoint = nextUrl
     || `${INSTAGRAM_API_ENDPOINT}${tag}/media/recent?count=33&access_token=223835195.631ddc9.d1c64501404549c2a8c26d002f8f08f5`;
 
-  console.log(`Init update ${tag}...`);
+  /* eslint-disable no-alert, no-console */
+  console.log(`Updating tag: ${tag}...`);
   console.log(endpoint);
+  /* eslint-enable no-alert, no-console */
 
   try {
     const result = HTTP.call('GET', endpoint, {});
@@ -96,6 +98,4 @@ export default (tag, nextUrl, lastMediaId) => {
 
     printError(tag, httpGetError, 'httpGetError', endpoint);
   }
-
-  console.log(`Finish ${tag}...`);
 };

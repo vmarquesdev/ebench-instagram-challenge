@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
 import {
   queues,
@@ -9,28 +10,7 @@ import {
 
 import { Tags } from '../../api/tags/tags.js';
 
-/* eslint-disable */
-// Casos de uso para testar esse os métodos
-// 1. Testar print do erro.
-// 2. Testar default func
-//     - Não deve chamar método http se a tag não existir.
-//     - Deve chamar get HTTP se a tag não existir.
-//     - Se a http retornar uma exceção deve chamar tag add e printerror.
-//     - Se não retornar exeção deve chamar o método insertTag
-// 2. Testar o método creatTag.
-//      1. Se o returnedTag não tiver media count não retorna undefined
-//      2. Fazer um try, catch da inserção da tag,
-//          - Se inserir retornar a tag e verificar se ela foi adicionada a fila MEDIAS_RATE_LIMITER
-//            com objeto igual está aqui.
-//          - Verficar se foi adicionar a fila a TAG_RATE_LIMITER com objeto igual está aqui
-// 3. Testar o método insertTag
-//      1. Se não existe tag com esse nome retorna undefined
-//      2. Se a requisição retornar error verificar se a tag é adicionada a fila TAG_RATE_LIMITER
-//      3. Se a requisção der certo deve retornar a tag inserida.
-/* eslint-enable */
-
-const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
-// const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
+const { INSTAGRAM_API_ENDPOINT } = Meteor.settings.private;
 
 const printError = (tag, error, errorType) => {
   /* eslint-disable no-alert, no-console */

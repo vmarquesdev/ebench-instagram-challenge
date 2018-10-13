@@ -1,12 +1,13 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Icon = (props) => {
-  const { name, className } = props; // eslint-disable-line
+const Icon = props => {
+  const { name, className } = props;
 
   return (
     <svg className={`sprite ${className}`}>
-      <use xlinkHref={`http://localhost:3000/i.svg#icon-${name}`} />
+      <use xlinkHref={`${Meteor.settings.public.HOST}/i.svg#icon-${name}`} />
     </svg>
   );
 };

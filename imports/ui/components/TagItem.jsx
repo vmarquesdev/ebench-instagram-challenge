@@ -1,10 +1,11 @@
+/* eslint-disable */
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import Icon from './Icon.jsx';
 
-const TagItem = (props) => {
+const TagItem = props => {
   const { tag } = props;
 
   return (

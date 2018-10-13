@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint-disable */
 
 import { Meteor } from 'meteor/meteor';
 import chai, { expect } from 'chai';

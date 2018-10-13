@@ -29,7 +29,7 @@ export default class Uploader extends Component {
       if (file) {
         if (file.type !== 'text/csv') {
           self.fileInput.value = '';
-          // alert('Only upload CSV files.');
+          alert('Only upload CSV files.');
 
           return false;
         }

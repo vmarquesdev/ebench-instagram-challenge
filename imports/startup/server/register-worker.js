@@ -1,6 +1,9 @@
+import { Meteor } from 'meteor/meteor';
+
 import '../../worker/index.js';
 
 import Arena from 'bull-arena';
+
 import {
   TAG_RATE_LIMITER,
   MEDIAS_RATE_LIMITER,
@@ -10,56 +13,40 @@ import {
   UPDATE_TAG_MEDIAS,
 } from '../../worker/queues';
 
+const { REDIS } = Meteor.settings.private;
+
 Arena(
   {
     queues: [
       {
         name: TAG_RATE_LIMITER,
         hostId: 'Worker',
-        redis: {
-          host: 'localhost',
-          port: 6379,
-        },
+        redis: REDIS,
       },
       {
         name: MEDIAS_RATE_LIMITER,
         hostId: 'Worker',
-        redis: {
-          host: 'localhost',
-          port: 6379,
-        },
+        redis: REDIS,
       },
       {
         name: RAKE_TAGS,
         hostId: 'Worker',
-        redis: {
-          host: 'localhost',
-          port: 6379,
-        },
+        redis: REDIS,
       },
       {
         name: INSERT_TAG,
         hostId: 'Worker',
-        redis: {
-          host: 'localhost',
-          port: 6379,
-        },
+        redis: REDIS,
       },
       {
         name: UPDATE_TAG_COUNT,
         hostId: 'Worker',
-        redis: {
-          host: 'localhost',
-          port: 6379,
-        },
+        redis: REDIS,
       },
       {
         name: UPDATE_TAG_MEDIAS,
         hostId: 'Worker',
-        redis: {
-          host: 'localhost',
-          port: 6379,
-        },
+        redis: REDIS,
       },
     ],
   },

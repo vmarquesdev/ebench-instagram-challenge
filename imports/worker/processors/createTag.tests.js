@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint-disable */
 
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
@@ -18,9 +19,6 @@ if (Meteor.isServer) {
 
   describe('Worker | Processors: createTag', () => {
     let tagStub;
-
-    const INSTAGRAM_API_ENDPOINT = 'http://localhost:9000/v1/tags/';
-    // const INSTAGRAM_API_ENDPOINT = 'https://api.instagram.com/v1/tags/';
 
     beforeEach(() => {
       resetDatabase();

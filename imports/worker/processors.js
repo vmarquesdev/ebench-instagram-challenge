@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import {
   queues,
   TAG_RATE_LIMITER,
@@ -43,10 +44,10 @@ export const processorInitialisers = {
   },
   [TAG_RATE_LIMITER]: () => async (job) => {
     queues[job.data.queue].add(job.data.data, { removeOnComplete: true });
-    rateLimitersRegisterStatus('tags', 450);
+    rateLimitersRegisterStatus('tags', Meteor.settings.private.TAG_RATE);
   },
   [MEDIAS_RATE_LIMITER]: () => async (job) => {
     queues[job.data.queue].add(job.data.data, { removeOnComplete: true });
-    rateLimitersRegisterStatus('medias', 155);
+    rateLimitersRegisterStatus('medias', Meteor.settings.private.MEDIAS_RATE);
   },
 };

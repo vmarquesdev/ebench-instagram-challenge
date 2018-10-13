@@ -1,8 +1,9 @@
+/* eslint-disable */
 import React from 'react';
 
 const Loading = () => (
   <span className="loading">
-    <img src="http://localhost:3000/loading.gif" alt="" />
+    <img src={`${Meteor.settings.public.HOST}/loading.gif`} alt="" />
   </span>
 );
 
