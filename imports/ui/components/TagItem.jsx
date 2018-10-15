@@ -9,7 +9,7 @@ const TagItem = props => {
   const { tag } = props;
 
   return (
-    <NavLink to={`/tags/${tag._id}`} key={tag._id} className="tag-item">
+    <NavLink to={`/tags/${tag.name}`} key={tag._id} className="tag-item">
       <div className="tag-item__info">
         <span className="tag-item__status">
           {tag.updated ? (

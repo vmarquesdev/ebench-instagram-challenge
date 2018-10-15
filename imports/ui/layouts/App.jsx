@@ -20,7 +20,7 @@ export default class App extends Component {
     const newState = { defaultPath: null, redirectTo: null };
     if (!nextProps.loading) {
       const tag = Tags.findOne();
-      newState.defaultPath = tag ? `/tags/${tag._id}` : '/tags';
+      newState.defaultPath = tag ? `/tags/${tag.name}` : '/tags';
     }
     return newState;
   }
@@ -98,12 +98,12 @@ export default class App extends Component {
             {loading ? (
               <Loading />
             ) : (
-              <TransitionGroup className="content__body">
+              <TransitionGroup id="medias-scroller" className="content__body">
                 <CSSTransition key={location.key} classNames="fade" timeout={200}>
                   <Switch location={location}>
                     <Route exact path="/tags" />
                     <Route
-                      path="/tags/:id"
+                      path="/tags/:name"
                       render={({ match }) => <TagsPageContainer match={match} />}
                     />
                     <Route path="/*" render={() => <NotFoundPage />} />

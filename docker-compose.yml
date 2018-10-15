@@ -17,7 +17,7 @@ services:
       ROOT_URL: 'http://localhost:3000'
       MONGO_URL: 'mongodb://mongo:27017/meteor'
       REDIS_URL: 'redis://cache'
-      METEOR_SETTINGS: '{ "public": { "HOST": "http://localhost:3000" }, "private": { "REDIS": "redis://cache", "TAG_RATE": 450, "TAG_MINUTES_LIMITER": 60, "MEDIAS_RATE": 150, "MEDIAS_MINUTES_LIMITER": 60, "INSTAGRAM_API_ENDPOINT": "http://api.instagram.com/v1/tags/", "INSTAGRAM_API_ACCESS_TOKEN": "223835195.631ddc9.d1c64501404549c2a8c26d002f8f08f5" } }'
+      METEOR_SETTINGS: '{ "public": { "HOST": "http://localhost:3000" }, "private": { "REDIS": "redis://cache", "TAG_RATE": 450, "TAG_MINUTES_LIMITER": 60, "MEDIAS_RATE": 150, "MEDIAS_MINUTES_LIMITER": 60, "INSTAGRAM_API_ENDPOINT": "https://api.instagram.com/v1/tags/", "INSTAGRAM_API_ACCESS_TOKEN": "223835195.631ddc9.d1c64501404549c2a8c26d002f8f08f5" } }'
     container_name: app
 
   mongo:

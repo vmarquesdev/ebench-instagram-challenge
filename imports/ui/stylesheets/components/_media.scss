@@ -61,6 +61,20 @@
   font-size: $font-size-xs;
   margin: 0;
 
+  &.fade-enter {
+    -webkit-transition: 500ms;
+    transition: 500ms;
+    -webkit-transform: translateY(-100%);
+            transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  &.fade-enter-active {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1;
+  }
+
   .media-item__img {
     @include bgcover;
     display: block;

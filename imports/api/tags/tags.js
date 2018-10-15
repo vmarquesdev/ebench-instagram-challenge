@@ -74,7 +74,7 @@ Tags.helpers({
   medias(limit) {
     const options = { sort: { createdAt: -1 }, fields: Medias.fields };
 
-    if (limit) options.limit = Math.min(limit, 36);
+    if (limit) options.limit = limit;
 
     return Medias.find({ tags: this.name }, options);
   },

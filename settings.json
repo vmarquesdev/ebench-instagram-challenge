@@ -8,7 +8,7 @@
     "TAG_MINUTES_LIMITER": 60,
     "MEDIAS_RATE": 150,
     "MEDIAS_MINUTES_LIMITER": 60,
-    "INSTAGRAM_API_ENDPOINT": "http://api.instagram.com/v1/tags/",
+    "INSTAGRAM_API_ENDPOINT": "https://api.instagram.com/v1/tags/",
     "INSTAGRAM_API_ACCESS_TOKEN": "223835195.631ddc9.d1c64501404549c2a8c26d002f8f08f5"
   }
 }
