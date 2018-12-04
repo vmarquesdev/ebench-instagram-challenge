@@ -26,7 +26,7 @@ The [instagram-tag-endpoint-faker documantation](https://github.com/vmarquesdev/
 
 The live application rate limit is set to `200 requests/5 minutes` for you to see the behavior.
 
-You can upload this base file [tags.csv](https://github.com/eBench/victor/blob/master/tags.csv) in the live application to see how works.
+You can upload this base file [tags.csv](https://github.com/vmarquesdev/blob/master/tags.csv) in the live application to see how works.
 
 ## Installation
 
