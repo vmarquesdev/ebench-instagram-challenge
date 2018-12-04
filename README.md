@@ -1,5 +1,23 @@
 ## eBench Instagram Challenge
 
+### The eBench Briefing
+
+The project is aiming at getting the posts by tags from [Instagram API](https://www.instagram.com/developer/endpoints/tags/#get_tags_media_recent).
+ Then, store the data into MongoDB as json, the format doesn’t matter.
+The input would be uploading a file with a list of tags inside.
+There are several points to note:
+
+1.  Exception handling, specifically for the API requests.
+2.  Rate limit control.
+3.  the project includes Queue job system(bull-js), it has web interface as frontend, queue job handling as backend.
+4.  Feel free to pick any framework/modules you want to use as you see fit.
+5.  this would need you to understand the api doc of Instagram.
+6.  No authentication needed, just a plain page, and CLI app for backend.
+7.  The Instagram API is going to be deprecated, but it serves well as a trial project, also, we could need this in production.
+8.  Optional: pack it up in docker image. Specifically with “docker stack apply”.
+
+## My solution proposal
+
 This application is responsible for receiving CSV files containing instagram tags, the app scanning the Instagram API storing the medias of each tag through job queues.
 
 You can see the Live App [here](http://159.203.95.75), the live app uses the API of a basic application that I created called [instagram-tag-endpoint-faker](https://github.com/vmarquesdev/instagram-tags-endpoint-faker), this app simulates instagram API responses, without risking to reach the rate limits.
@@ -25,8 +43,6 @@ The first build can take up to 15 minutes, because of the Meteor installation.
 ### Installing services on a local machine
 
 `$ curl https://install.meteor.com/ | sh && brew install redis && meteor npm install && redis-server && npm start`
-
-## Solution proposal
 
 ### Build With
 
@@ -106,22 +122,6 @@ This application uses React for its interface, it was not used Redux because it 
 ## Tests
 
 Run `$ npm test` to run the app tests.
-
-## The Briefing
-
-The project is aiming at getting the posts by tags from [Instagram API](https://www.instagram.com/developer/endpoints/tags/#get_tags_media_recent).
- Then, store the data into MongoDB as json, the format doesn’t matter.
-The input would be uploading a file with a list of tags inside.
-There are several points to note:
-
-1.  Exception handling, specifically for the API requests.
-2.  Rate limit control.
-3.  the project includes Queue job system(bull-js), it has web interface as frontend, queue job handling as backend.
-4.  Feel free to pick any framework/modules you want to use as you see fit.
-5.  this would need you to understand the api doc of Instagram.
-6.  No authentication needed, just a plain page, and CLI app for backend.
-7.  The Instagram API is going to be deprecated, but it serves well as a trial project, also, we could need this in production.
-8.  Optional: pack it up in docker image. Specifically with “docker stack apply”.
 
 ## Author
 
